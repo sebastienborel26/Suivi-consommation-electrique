@@ -154,17 +154,18 @@
   .card-total { border-top: 3px solid var(--accent); }
   .card-total .summary-value { color: var(--accent); }
 
-  .chart-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 16px 24px; margin-bottom: 36px; box-shadow: var(--shadow-md); overflow: hidden; }
+  .chart-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 16px 16px; margin-bottom: 36px; box-shadow: var(--shadow-md); overflow: hidden; }
   .chart-title { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 20px; }
-  .chart-bars { display: flex; align-items: flex-end; gap: 4px; height: 300px; position: relative; padding-bottom: 28px; padding-top: 30px; box-sizing: border-box; }
-  .bar-group { flex: 1; min-width: 0; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; }
+  .chart-bars { display: flex; align-items: flex-end; gap: 4px; height: 200px; position: relative; margin-top: 32px; margin-bottom: 8px; }
+  .bar-group { flex: 1; min-width: 0; position: relative; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; }
   .bar-stack { width: 100%; display: flex; flex-direction: column; gap: 1px; cursor: default; }
   .bar-seg { width: 100%; min-height: 2px; }
   .bar-seg:first-child { border-radius: 3px 3px 0 0; }
   .seg-hc { background: var(--hc); } .seg-hp { background: var(--hp); } .seg-abo { background: #94a3b8; }
-  .bar-label { position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500; font-size: 9px; color: var(--text2); text-transform: uppercase; white-space: nowrap; }
-  .bar-val { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 8px; color: var(--text2); white-space: nowrap; pointer-events: none; }
-  .legend { display: flex; gap: 16px; margin-top: 14px; flex-wrap: wrap; }
+  .bar-label { flex: 1; min-width: 0; text-align: center; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500; font-size: 9px; color: var(--text2); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar-val { position: absolute; left: 50%; transform: translateX(-50%); font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 8px; color: var(--text2); white-space: nowrap; pointer-events: none; }
+  .chart-month-row { display: flex; gap: 4px; margin-bottom: 12px; }
+  .legend { display: flex; gap: 16px; margin-top: 4px; flex-wrap: wrap; }
   .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text2); font-weight: 500; }
   .legend-dot { width: 10px; height: 10px; border-radius: 3px; }
 
@@ -1236,20 +1237,33 @@ function recalc() {
 
   // ── Monthly bar chart ──
   const maxV = Math.max(...mTotal, 1);
-  const CH = 210;
+  const CH = 190;
   const barsEl = document.getElementById('chart-bars');
   barsEl.innerHTML = '';
+
+  // Rangée labels mois : on réutilise ou crée l'élément
+  let monthRow = document.getElementById('chart-month-row');
+  if (!monthRow) {
+    monthRow = document.createElement('div');
+    monthRow.id = 'chart-month-row';
+    monthRow.className = 'chart-month-row';
+    barsEl.parentNode.insertBefore(monthRow, barsEl.nextSibling);
+  }
+  monthRow.innerHTML = '';
+
   MONTHS_DEF.forEach((m, i) => {
     const t = T[m.period];
     const aboH = Math.round((t.abo/maxV)*CH);
     const hcH  = Math.round((mCostHC[i]/maxV)*CH);
     const hpH  = Math.round((mCostHP[i]/maxV)*CH);
     const totalH = aboH + hcH + hpH;
+
+    // Barre
     const g = document.createElement('div'); g.className='bar-group';
     const v = document.createElement('div'); v.className='bar-val';
     if (mTotal[i]>0) {
       v.textContent = fmt(mTotal[i])+'€';
-      v.style.bottom = (28 + (totalH||2) + 3) + 'px';
+      v.style.bottom = ((totalH||2) + 4) + 'px';
     }
     const st = document.createElement('div'); st.className='bar-stack';
     st.style.height=(totalH||2)+'px';
@@ -1258,8 +1272,12 @@ function recalc() {
     if (hpH>0){const s=document.createElement('div');s.className='bar-seg seg-hp';s.style.height=hpH+'px';st.appendChild(s);}
     if (hcH>0){const s=document.createElement('div');s.className='bar-seg seg-hc';s.style.height=hcH+'px';st.appendChild(s);}
     if (!totalH){const e=document.createElement('div');e.style.cssText='height:2px;background:var(--border);border-radius:2px;';st.appendChild(e);}
-    const lb=document.createElement('div');lb.className='bar-label';lb.textContent=m.abbr;
-    g.appendChild(v);g.appendChild(st);g.appendChild(lb);barsEl.appendChild(g);
+    g.appendChild(v); g.appendChild(st);
+    barsEl.appendChild(g);
+
+    // Label mois dans la rangée séparée
+    const lb = document.createElement('div'); lb.className='bar-label'; lb.textContent=m.abbr;
+    monthRow.appendChild(lb);
   });
 }
 
