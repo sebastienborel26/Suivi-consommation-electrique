@@ -154,10 +154,10 @@
   .card-total { border-top: 3px solid var(--accent); }
   .card-total .summary-value { color: var(--accent); }
 
-  .chart-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px 24px 20px; margin-bottom: 36px; box-shadow: var(--shadow-md); overflow: hidden; }
+  .chart-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 40px 24px 20px; margin-bottom: 36px; box-shadow: var(--shadow-md); }
   .chart-title { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); margin-bottom: 20px; }
-  .chart-bars { display: flex; align-items: flex-end; gap: 6px; height: 240px; }
-  .bar-group { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 2px; height: 100%; justify-content: flex-end; overflow: hidden; }
+  .chart-bars { display: flex; align-items: flex-end; gap: 6px; height: 180px; }
+  .bar-group { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 2px; }
   .bar-stack { width: 100%; display: flex; flex-direction: column; gap: 1px; cursor: default; }
   .bar-seg { width: 100%; min-height: 2px; }
   .bar-seg:first-child { border-radius: 3px 3px 0 0; }
@@ -1236,7 +1236,7 @@ function recalc() {
 
   // ── Monthly bar chart ──
   const maxV = Math.max(...mTotal, 1);
-  const CH = 190;
+  const CH = 175;
   const barsEl = document.getElementById('chart-bars');
   barsEl.innerHTML = '';
   MONTHS_DEF.forEach((m, i) => {
