@@ -337,60 +337,23 @@
   .comp-kwh-val { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 500; font-size: 9px; color: var(--text2); }
 
 
-  /* ── Bannière sync Firebase ── */
-  #sync-banner {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
-    padding: 10px 20px; font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 13px; font-weight: 500; text-align: center;
-    display: none; align-items: center; justify-content: center; gap: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-  }
-  #sync-banner.connecting { background: #fff3cd; color: #856404; display: flex; }
-  #sync-banner.synced     { background: #d1e7dd; color: #0a3622; display: flex; }
-  #sync-banner.error      { background: #f8d7da; color: #58151c; display: flex; }
-  #sync-banner.offline    { background: #e2e3e5; color: #41464b; display: flex; }
-  .sync-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .sync-dot.green  { background: #198754; animation: pulse 1.5s infinite; }
-  .sync-dot.yellow { background: #ffc107; animation: pulse 0.8s infinite; }
-  .sync-dot.red    { background: #dc3545; }
-  .sync-dot.grey   { background: #6c757d; }
+  /* ── Auth button + sync indicator ── */
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  #firebase-config-modal {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 10000;
-    display: flex; align-items: center; justify-content: center; padding: 20px;
-  }
-  .config-box {
-    background: #fff; border-radius: 16px; padding: 32px; max-width: 560px; width: 100%;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.25); font-family: 'Plus Jakarta Sans', sans-serif;
-  }
-  .config-box h2 { font-size: 20px; font-weight: 700; color: #003189; margin-bottom: 8px; }
-  .config-box p  { font-size: 13px; color: #5a6278; margin-bottom: 16px; line-height: 1.6; }
-  .config-box ol { font-size: 13px; color: #5a6278; margin-bottom: 20px; padding-left: 20px; line-height: 2; }
-  .config-box textarea {
-    width: 100%; height: 160px; font-family: 'JetBrains Mono', monospace; font-size: 11px;
-    border: 1px solid #dde1eb; border-radius: 8px; padding: 12px; resize: vertical;
-    outline: none; color: #1a1f2e;
-  }
-  .config-box textarea:focus { border-color: #003189; box-shadow: 0 0 0 3px rgba(0,49,137,0.1); }
-  .config-btn {
-    display: inline-flex; align-items: center; gap: 8px; margin-top: 14px;
-    padding: 10px 22px; border-radius: 8px; font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s;
-  }
-  .config-btn.primary { background: #003189; color: #fff; }
-  .config-btn.primary:hover { background: #002070; }
-  .config-btn.secondary { background: #f0f2f7; color: #5a6278; margin-left: 8px; }
-  .config-btn.secondary:hover { background: #e2e5ec; }
-  .config-error { color: #dc3545; font-size: 12px; margin-top: 8px; display: none; }
-  /* Bouton de config dans le header */
-  #btn-config-firebase {
+  #btn-auth {
     position: fixed; bottom: 20px; right: 20px; z-index: 999;
     background: #003189; color: #fff; border: none; border-radius: 50px;
     padding: 10px 18px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px;
     font-weight: 600; cursor: pointer; box-shadow: 0 4px 14px rgba(0,49,137,0.3);
-    display: flex; align-items: center; gap: 6px; transition: all 0.15s;
+    display: flex; align-items: center; gap: 8px; transition: all 0.15s;
   }
-  #btn-config-firebase:hover { background: #002070; transform: translateY(-1px); }
+  #btn-auth:hover { background: #002070; transform: translateY(-1px); }
+  #btn-auth.connected { background: #1a8f38; box-shadow: 0 4px 14px rgba(26,143,56,0.35); }
+  #btn-auth.connected:hover { background: #147030; }
+  .auth-avatar { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; }
+  .sync-indicator { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.4); flex-shrink: 0; transition: background .3s; }
+  .sync-indicator.syncing { background: #fbbf24; animation: pulse .8s infinite; }
+  .sync-indicator.synced  { background: #6ee7b7; }
+  .sync-indicator.error   { background: #f87171; }
 
   /* ═══════════════════════════════════════════════
      RESPONSIVE MOBILE — max-width: 600px
@@ -463,19 +426,8 @@
     /* Tableau partiel : scroll horizontal */
     .partial-table { min-width: 500px; }
 
-    /* Modal Firebase : plein écran mobile */
-    #firebase-config-modal { padding: 10px; align-items: flex-end; }
-    .config-box { padding: 20px 16px; border-radius: 16px 16px 0 0; max-width: 100%; }
-    .config-box h2 { font-size: 17px; }
-    .config-box p, .config-box ol { font-size: 12px; }
-    .config-box textarea { height: 130px; font-size: 10px; }
-    .config-btn { font-size: 13px; padding: 9px 16px; }
-
-    /* Bouton Firebase flottant */
-    #btn-config-firebase { bottom: 14px; right: 14px; padding: 9px 14px; font-size: 11px; }
-
-    /* Bannière sync */
-    #sync-banner { font-size: 12px; padding: 8px 14px; }
+    /* Bouton Auth flottant */
+    #btn-auth { bottom: 14px; right: 14px; padding: 9px 14px; font-size: 11px; }
 
     /* Section title */
     .section-title { font-size: 11px; margin-bottom: 12px; }
@@ -495,49 +447,14 @@
 
 </style>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 </head>
 <body>
 
-<!-- Bannière statut sync -->
-<div id="sync-banner">
-  <div class="sync-dot" id="sync-dot"></div>
-  <span id="sync-msg">Connexion à Firebase…</span>
-</div>
-
-<!-- Modal configuration Firebase -->
-<div id="firebase-config-modal" style="display:none">
-  <div class="config-box">
-    <h2>⚡ Connexion Firebase</h2>
-    <p>Pour synchroniser vos données sur tous vos appareils, collez votre configuration Firebase ci-dessous.</p>
-    <ol>
-      <li>Ouvrez <strong>console.firebase.google.com</strong></li>
-      <li>Votre projet → ⚙️ Paramètres → <strong>Vos applications</strong> → icône Web <code>&lt;/&gt;</code></li>
-      <li>Copiez le contenu de <code>firebaseConfig = { … }</code></li>
-      <li>Collez-le ici et cliquez <strong>Connecter</strong></li>
-    </ol>
-    <textarea id="firebase-config-input" placeholder='{
-  "apiKey": "AIza...",
-  "authDomain": "mon-projet.firebaseapp.com",
-  "databaseURL": "https://mon-projet-default-rtdb.europe-west1.firebasedatabase.app",
-  "projectId": "mon-projet",
-  "storageBucket": "mon-projet.appspot.com",
-  "messagingSenderId": "123456789",
-  "appId": "1:123456789:web:abc..."
-}'></textarea>
-    <div class="config-error" id="config-error"></div>
-    <div>
-      <button class="config-btn primary" onclick="applyFirebaseConfig()">🔗 Connecter</button>
-      <button class="config-btn secondary" onclick="closeConfigModal()">Continuer sans Firebase (local)</button>
-    </div>
-  </div>
-</div>
-
-<!-- Bouton flottant pour reconfigurer -->
-<button id="btn-config-firebase" onclick="openConfigModal()">
-  <span id="firebase-status-icon">☁️</span> Firebase
+<!-- Bouton auth flottant -->
+<button id="btn-auth" onclick="toggleAuth()">
+  <span id="auth-icon">👤</span>
+  <span id="auth-label">Se connecter</span>
+  <div class="sync-indicator" id="syncDot"></div>
 </button>
 
 <div class="wrapper">
@@ -788,162 +705,23 @@ let activeYear = new Date().getFullYear();
 let periodAUnlocked = false; // manual unlock state for current year view
 
 // ── Firebase + Storage ────────────────────────────────────────────────────
-const FIREBASE_CONFIG_KEY = 'edf_firebase_config';
-let db = null;          // Firebase Realtime Database ref
-let fbUserId = 'default'; // identifiant utilisateur (peut être personnalisé)
-let syncPending = false;
-
 function sk(y) { return `edf_${y}`; }
 
-// ── Bannière statut ──
-function setSync(state, msg) {
-  const banner = document.getElementById('sync-banner');
-  const dot    = document.getElementById('sync-dot');
-  const msgEl  = document.getElementById('sync-msg');
-  const icon   = document.getElementById('firebase-status-icon');
-  banner.className = state;
-  dot.className = 'sync-dot ' + ({connecting:'yellow',synced:'green',error:'red',offline:'grey'}[state]||'grey');
-  msgEl.textContent = msg;
-  icon.textContent = {connecting:'🔄',synced:'✅',error:'⚠️',offline:'💾'}[state]||'☁️';
-  if (state === 'synced') setTimeout(()=>{ banner.style.display='none'; }, 2500);
-}
-
-// ── Sauvegarder localement (toujours) + Firebase si dispo ──
-function saveY(y, d) {
-  localStorage.setItem(sk(y), JSON.stringify(d));
-  if (db) {
-    setSync('connecting', 'Synchronisation en cours…');
-    db.ref(`users/${fbUserId}/${sk(y)}`).set(d)
-      .then(()  => setSync('synced', 'Données synchronisées ✓'))
-      .catch(e  => setSync('error', 'Erreur sync : ' + e.message));
-  }
-}
-
-// ── Charger depuis localStorage (fallback si Firebase pas dispo) ──
+// ── Charger depuis localStorage ──
 function loadY(y) {
   try { return JSON.parse(localStorage.getItem(sk(y))); } catch { return null; }
 }
 
-// ── Chargement complet depuis Firebase (appelé à l'init) ──
-async function loadAllFromFirebase() {
-  if (!db) return;
-  setSync('connecting', 'Chargement des données depuis le cloud…');
-  try {
-    const snap = await db.ref(`users/${fbUserId}`).get();
-    if (snap.exists()) {
-      const data = snap.val();
-      Object.entries(data).forEach(([k, v]) => {
-        if (k.startsWith('edf_')) localStorage.setItem(k, JSON.stringify(v));
-      });
-      setSync('synced', 'Données chargées depuis Firebase ✓');
-    } else {
-      // Aucune donnée cloud → uploader le localStorage existant
-      const keys = [];
-      for (let i=0;i<localStorage.length;i++){
-        const k=localStorage.key(i);
-        if(k&&k.startsWith('edf_')&&!k.includes('firebase')) keys.push(k);
-      }
-      if (keys.length) {
-        const batch = {};
-        keys.forEach(k => { try { batch[k]=JSON.parse(localStorage.getItem(k)); } catch{} });
-        await db.ref(`users/${fbUserId}`).set(batch);
-        setSync('synced', 'Données locales envoyées vers Firebase ✓');
-      } else {
-        setSync('synced', 'Firebase connecté — prêt à recevoir des données');
-      }
-    }
-    // Recharger l'UI avec les nouvelles données
-    loadYearUI(activeYear);
-  } catch(e) {
-    setSync('error', 'Erreur chargement : ' + e.message);
-  }
+// ── saveY : localStorage + Firestore si connecté ──
+function saveY(y, d) {
+  localStorage.setItem(sk(y), JSON.stringify(d));
+  if (window._fbSave) window._fbSave(y, d);
 }
 
-// ── Écoute temps réel : met à jour l'UI si modif depuis un autre appareil ──
-function subscribeRealtime() {
-  if (!db) return;
-  db.ref(`users/${fbUserId}`).on('value', snap => {
-    if (!snap.exists()) return;
-    const data = snap.val();
-    let changed = false;
-    Object.entries(data).forEach(([k, v]) => {
-      if (k.startsWith('edf_')) {
-        const current = localStorage.getItem(k);
-        const incoming = JSON.stringify(v);
-        if (current !== incoming) { localStorage.setItem(k, incoming); changed = true; }
-      }
-    });
-    if (changed) {
-      loadYearUI(activeYear);
-      if (document.getElementById('tab-compare').classList.contains('active')) renderComparison();
-      setSync('synced', 'Mise à jour reçue depuis un autre appareil ✓');
-    }
-  });
-}
+// Fonctions Firebase exposées depuis le module (no-ops par défaut)
+window._fbSave = null;
 
-// ── Initialiser Firebase depuis la config stockée ──
-function initFirebase(config) {
-  try {
-    // Nettoyer les apps existantes
-    if (firebase.apps.length) firebase.apps.forEach(a => a.delete());
-    const app = firebase.initializeApp(config);
-    db = firebase.database(app);
-    document.getElementById('btn-config-firebase').style.background = '#1a8f38';
-    loadAllFromFirebase().then(() => subscribeRealtime());
-    return true;
-  } catch(e) {
-    console.error('Firebase init error:', e);
-    return false;
-  }
-}
 
-// ── Modal configuration ──
-function openConfigModal() {
-  const saved = localStorage.getItem(FIREBASE_CONFIG_KEY);
-  if (saved) {
-    try { document.getElementById('firebase-config-input').value = JSON.stringify(JSON.parse(saved), null, 2); } catch{}
-  }
-  document.getElementById('firebase-config-modal').style.display = 'flex';
-}
-
-function closeConfigModal() {
-  document.getElementById('firebase-config-modal').style.display = 'none';
-}
-
-function applyFirebaseConfig() {
-  const raw = document.getElementById('firebase-config-input').value.trim();
-  const errEl = document.getElementById('config-error');
-  errEl.style.display = 'none';
-  let config;
-  try {
-    let cleaned = raw;
-    // Supprimer "const firebaseConfig =" ou "var firebaseConfig ="
-    cleaned = cleaned.replace(/^\s*(const|var|let)\s+firebaseConfig\s*=\s*/, '');
-    // Supprimer le point-virgule final et espaces
-    cleaned = cleaned.replace(/;\s*$/, '').trim();
-    // Remplacer les guillemets simples par des guillemets doubles
-    cleaned = cleaned.replace(/'/g, '"');
-    // Remplacer les clés sans guillemets (ex: apiKey:) par des clés avec guillemets ("apiKey":)
-    cleaned = cleaned.replace(/([{,]\s*)([a-zA-Z_][a-zA-Z0-9_]*)\s*:/g, '$1"$2":');
-    config = JSON.parse(cleaned);
-  } catch(e) {
-    errEl.textContent = 'Format non reconnu. Copiez uniquement le bloc { ... } depuis Firebase (avec ou sans "const firebaseConfig ="). Erreur : ' + e.message;
-    errEl.style.display = 'block';
-    return;
-  }
-  if (!config.databaseURL) {
-    errEl.textContent = 'La clé "databaseURL" est manquante. Assurez-vous d\'avoir activé Realtime Database dans Firebase.';
-    errEl.style.display = 'block';
-    return;
-  }
-  localStorage.setItem(FIREBASE_CONFIG_KEY, JSON.stringify(config));
-  closeConfigModal();
-  if (initFirebase(config)) {
-    setSync('connecting', 'Connexion à Firebase…');
-  } else {
-    setSync('error', 'Impossible d\'initialiser Firebase. Vérifiez la configuration.');
-  }
-}
 function defaultData() {
   return {
     tariffs: { hc_a:'', hp_a:'', abo_a:'', base_a:'', abo_base_a:'', hc_b:'', hp_b:'', abo_b:'', base_b:'', abo_base_b:'', hc_c:'', hp_c:'', abo_c:'', base_c:'', abo_base_c:'', a_manual: false },
@@ -1645,23 +1423,182 @@ function showTab(id, btn) {
 // ── Init ───────────────────────────────────────────────────────────────────
 buildTable();
 loadYearUI(activeYear);
+// Expose fonctions clés pour le module Firebase
+window.loadYearUI = loadYearUI;
+window.renderComparison = renderComparison;
+Object.defineProperty(window, 'activeYear', { get: () => activeYear, set: v => { activeYear = v; } });
+// toggleAuth exposé globalement (sera défini dans le module Firebase)
+window.toggleAuth = function() {};
+</script>
 
-// Tenter connexion Firebase automatique si config déjà enregistrée
-(function() {
-  const saved = localStorage.getItem(FIREBASE_CONFIG_KEY);
-  if (saved) {
-    try {
-      const config = JSON.parse(saved);
-      if (config && config.apiKey) {
-        setSync('connecting', 'Connexion à Firebase…');
-        initFirebase(config);
-      }
-    } catch(e) { console.warn('Firebase config load error:', e); }
-  } else {
-    // Première ouverture : afficher le modal de configuration
-    setTimeout(() => openConfigModal(), 600);
+<script type="module">
+// ─── FIREBASE MODULE ───────────────────────────────────────────────────────
+import { initializeApp }                          from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, signInWithPopup, signOut,
+         GoogleAuthProvider, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getFirestore, doc, setDoc,
+         getDoc, onSnapshot }                     from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyCZNx3VOhYbY2fJOLH3VVzEkTkQyzft7JA",
+  authDomain:        "suivi-consommation-electrique.firebaseapp.com",
+  projectId:         "suivi-consommation-electrique",
+  storageBucket:     "suivi-consommation-electrique.firebasestorage.app",
+  messagingSenderId: "964493007065",
+  appId:             "1:964493007065:web:857ea273681554e9af46c8"
+};
+
+const fbApp     = initializeApp(firebaseConfig);
+const fbAuth    = getAuth(fbApp);
+const fbDb      = getFirestore(fbApp);
+const provider  = new GoogleAuthProvider();
+
+let currentUser   = null;
+let saveTimeout   = null;
+let unsubSnapshot = null;
+let lastLocalSave = 0;
+
+function setSyncDot(state) { // 'idle' | 'syncing' | 'synced' | 'error'
+  const d = document.getElementById('syncDot');
+  if (!d) return;
+  d.className = 'sync-indicator' + (state !== 'idle' ? ' ' + state : '');
+}
+
+// ── Firestore save (toutes les années) ──
+async function saveToFirebase(year, data) {
+  if (!currentUser) return;
+  setSyncDot('syncing');
+  lastLocalSave = Date.now();
+  try {
+    // On stocke chaque année dans un document séparé
+    await setDoc(doc(fbDb, 'users', currentUser.uid, 'edf', `edf_${year}`), data);
+    lastLocalSave = Date.now();
+    setSyncDot('synced');
+    setTimeout(() => setSyncDot('idle'), 2000);
+  } catch(e) {
+    console.error('Firebase save error', e);
+    setSyncDot('error');
   }
-})();
+}
+
+// Débounce : attendre 1.5s après la dernière frappe avant de sauvegarder
+window._fbSave = function(year, data) {
+  if (saveTimeout) clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => saveToFirebase(year, data), 1500);
+};
+
+// ── Firestore load ──
+async function loadFromFirebase() {
+  if (!currentUser) return false;
+  setSyncDot('syncing');
+  try {
+    // Lire tous les documents de la collection edf/
+    const { getDocs, collection } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    const snapshot = await getDocs(collection(fbDb, 'users', currentUser.uid, 'edf'));
+    if (!snapshot.empty) {
+      snapshot.forEach(d => {
+        localStorage.setItem(d.id, JSON.stringify(d.data()));
+      });
+      setSyncDot('synced');
+      setTimeout(() => setSyncDot('idle'), 2000);
+    } else {
+      // Aucune donnée cloud → uploader localStorage existant
+      const uploads = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith('edf_')) {
+          try {
+            const v = JSON.parse(localStorage.getItem(k));
+            uploads.push(setDoc(doc(fbDb, 'users', currentUser.uid, 'edf', k), v));
+          } catch(e) {}
+        }
+      }
+      if (uploads.length) await Promise.all(uploads);
+      setSyncDot('synced');
+      setTimeout(() => setSyncDot('idle'), 2000);
+    }
+    return true;
+  } catch(e) {
+    console.error('Firebase load error', e);
+    setSyncDot('error');
+    return false;
+  }
+}
+
+// ── Écoute temps réel sur l'année active ──
+function subscribeRealtime() {
+  if (!currentUser) return;
+  if (unsubSnapshot) unsubSnapshot();
+  // On écoute la collection entière — onSnapshot par doc serait trop verbeux
+  // Ici on écoute l'année active uniquement (refresh léger)
+  const year = window.activeYear || new Date().getFullYear();
+  unsubSnapshot = onSnapshot(
+    doc(fbDb, 'users', currentUser.uid, 'edf', `edf_${year}`),
+    (snap) => {
+      if (!snap.exists()) return;
+      if (Date.now() - lastLocalSave < 10000) return; // ignorer notre propre save
+      localStorage.setItem(`edf_${year}`, JSON.stringify(snap.data()));
+      if (window.loadYearUI) window.loadYearUI(year);
+      if (window.renderComparison && document.getElementById('tab-compare')?.classList.contains('active'))
+        window.renderComparison();
+      setSyncDot('synced');
+      setTimeout(() => setSyncDot('idle'), 2000);
+    },
+    (err) => { console.error('Snapshot error', err); setSyncDot('error'); }
+  );
+}
+
+// ── Auth UI ──
+function updateAuthUI() {
+  const btn   = document.getElementById('btn-auth');
+  const icon  = document.getElementById('auth-icon');
+  const label = document.getElementById('auth-label');
+  if (!btn) return;
+  if (currentUser) {
+    btn.classList.add('connected');
+    icon.innerHTML = currentUser.photoURL
+      ? `<img class="auth-avatar" src="${currentUser.photoURL}" />`
+      : '✅';
+    label.textContent = currentUser.displayName || currentUser.email;
+  } else {
+    btn.classList.remove('connected');
+    icon.innerHTML    = '👤';
+    label.textContent = 'Se connecter';
+    setSyncDot('idle');
+  }
+}
+
+async function toggleAuth() {
+  if (currentUser) {
+    if (!confirm('Se déconnecter ? Les données locales seront conservées.')) return;
+    if (unsubSnapshot) { unsubSnapshot(); unsubSnapshot = null; }
+    window._fbSave = null;
+    await signOut(fbAuth);
+  } else {
+    try { await signInWithPopup(fbAuth, provider); }
+    catch(e) { console.error('Auth error', e); }
+  }
+}
+
+window.toggleAuth = toggleAuth;
+
+onAuthStateChanged(fbAuth, async (user) => {
+  currentUser = user;
+  updateAuthUI();
+  if (user) {
+    window._fbSave = function(year, data) {
+      if (saveTimeout) clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(() => saveToFirebase(year, data), 1500);
+    };
+    const loaded = await loadFromFirebase();
+    if (loaded) {
+      if (window.loadYearUI) window.loadYearUI(window.activeYear || new Date().getFullYear());
+      subscribeRealtime();
+    }
+  } else {
+    window._fbSave = null;
+  }
+});
 </script>
 </body>
 </html>
